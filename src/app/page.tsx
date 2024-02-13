@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import Navbar from "@/components/Navbar";
 import WeatherIcon from "@/components/WeatherIcon";
 import { convertTemperature } from "@/utils/convertTemperature";
+import { getDayOrNightIcon } from "@/utils/getDayOrNightIcon";
 import axios from "axios";
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
@@ -124,17 +125,31 @@ export default function Home() {
               <p className="whitespace-nowrap">
                 {format(parseISO(data.dt_txt),"h:mm a")}
               </p>
-              <WeatherIcon iconName={data?.weather[0].icon}/>
+              <WeatherIcon iconName={getDayOrNightIcon(data.weather[0].icon,data.dt_txt)}/>
               <p>{convertTemperature(data?.main.temp??0)}°</p>
             </div>
             )}
             </div>
             </Container>
           </div>
+
+          <div className="flex gap-4">
+            <Container className="w-fit justify-center flex-col px-4 items-center ">
+              <p className="capitalize text-center">{firstData?.weather[0].description}</p>
+              <WeatherIcon iconName={getDayOrNightIcon(firstData?.weather[0].icon??"",firstData?.dt_txt??"")}/>
+
+            </Container>
+
+            <Container className="bg-yellow-300/80 px-6 gap-4 justify-between">
+
+            </Container>
+          </div>
          
         </section>
         {/* 7 days forcast data */}
-        <section></section>        
+        <section className="flex w-full flex-col gap-4">
+              <p className="text-2xl">Forcast (7 days)</p>
+        </section>        
       </main>
     </div>
   );
